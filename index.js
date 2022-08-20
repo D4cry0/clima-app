@@ -3,7 +3,8 @@ dotenv.config()
 
 import { leerInput,
             inquirerMenu,
-            pausa, } from "./helpers/inquirer.js"
+            pausa,
+            listarLugares, } from "./helpers/inquirer.js"
 import { Busquedas } from "./models/busquedas.js";
 
 // process.env :: para acceder a las variables de entorno donde correo la app
@@ -21,18 +22,23 @@ const main = async() => {
         switch( opt ){
             case 1:
                 // Mostar msj
-                const lugar = await leerInput('Ciudad: ');
+                const busqueda = await leerInput('Ciudad: ');
                 // Buscar lugares
-                await busquedas.ciudad( lugar );
+                const lugares = await busquedas.ciudad( busqueda );
                 // Seleccionar el lugar
-
+                const id = await listarLugares(lugares);
+                
+                
+                const lugarSel = lugares.find( l => l.id === id );
+                
+                
                 // Clima
 
                 // Mostarr resultado
                 console.log('\nInformación de la ciudad\n'.green);
-                console.log('Ciudad:',);
-                console.log('Lat:',);
-                console.log('Lng:',);
+                console.log('Ciudad:',lugarSel.nombre);
+                console.log('Lat:',lugarSel.lat);
+                console.log('Lng:',lugarSel.lng);
                 console.log('Temperatura:',);
                 console.log('Minima:',);
                 console.log('Máxima:',);

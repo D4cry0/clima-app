@@ -25,9 +25,12 @@ class Busquedas {
             });
 
             const resp = await instance.get();
-            console.log(resp.data);
-    
-            return []; // los lugares que coinciden
+            return resp.data.features.map( lugar => ({
+                id: lugar.id,
+                nombre: lugar.place_name_es,
+                lng: lugar.center[0],
+                lat: lugar.center[1],
+            }));
 
         } catch ( err ){
             return [];
