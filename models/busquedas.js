@@ -12,8 +12,6 @@ class Busquedas {
     }
 
     get historialCapitalizado() {
-        // TODO: Capitalizar las plabras
-        
         return this.historial.map( ( lugar, i ) => {
             let palabras = lugar.split(' ');
             palabras = palabras.map( str => str[0].toUpperCase() + str.substring(1));
@@ -48,7 +46,7 @@ class Busquedas {
             return resp.data.features.map( lugar => ({
                 id: lugar.id,
                 nombre: lugar.place_name_es,
-                lng: lugar.center[0],
+                lng: lugar.center[0], // estas posiciones asi estan definidas en JSON
                 lat: lugar.center[1],
             }));
 
@@ -69,7 +67,7 @@ class Busquedas {
             const { weather, main } = resp.data;
 
             return {
-                desc: weather[0].description,
+                desc: weather[0].description, // estas posiciones asi estan definidas en JSON
                 min: main.temp_min,
                 max: main.temp_max,
                 temp: main.temp
@@ -88,7 +86,7 @@ class Busquedas {
         //para mantener solo 6 lugares
         this.historial = this.historial.splice(0,5);
 
-
+        // Unshift los coloca en la primera posicion del arreglo
         this.historial.unshift( lugar.toLowerCase() );
         //Grabar DB
         this.guardarDB();
