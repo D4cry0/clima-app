@@ -16,7 +16,6 @@ const main = async() => {
     const busquedas = new Busquedas();
 
     do{
-
         opt = await inquirerMenu();
 
         switch( opt ){
@@ -25,27 +24,39 @@ const main = async() => {
                 const busqueda = await leerInput('Ciudad: ');
                 // Buscar lugares
                 const lugares = await busquedas.ciudad( busqueda );
-                // Seleccionar el lugar
+
                 const id = await listarLugares(lugares);
+                if( id === '0' ) continue;
                 
                 
+                // Seleccionar el lugar
                 const lugarSel = lugares.find( l => l.id === id );
+                // Guardar DB
+                busquedas.agregarHistorial( lugarSel.nombre );
                 
                 
                 // Clima
+                const climaLugar = await busquedas.climaLugar(lugarSel.lat, lugarSel.lng);
 
                 // Mostarr resultado
-                console.log('\nInformación de la ciudad\n'.green);
-                console.log('Ciudad:',lugarSel.nombre);
-                console.log('Lat:',lugarSel.lat);
-                console.log('Lng:',lugarSel.lng);
-                console.log('Temperatura:',);
-                console.log('Minima:',);
-                console.log('Máxima:',);
+                console.clear();
+                console.log( '\nInformación de la ciudad\n'.green );
+                console.log( 'Ciudad:', lugarSel.nombre.green );
+                console.log( 'Lat:', lugarSel.lat );
+                console.log( 'Lng:', lugarSel.lng );
+                console.log( 'Temperatura:', climaLugar.temp );
+                console.log( 'Minima:', climaLugar.min );
+                console.log( 'Máxima:', climaLugar.max );
+                console.log( 'Como esta el clima:', climaLugar.desc.green );
                 
                 
                 break;
             case 2:
+                busquedas.historialCapitalizado.forEach( ( lugar, i ) => {
+                    const idx = `${ i + 1 }.`.green;
+                    console.log( `${ idx } ${ lugar }` );
+                    
+                });
                 break;
         }
 
